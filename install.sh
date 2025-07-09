@@ -15,7 +15,17 @@ NC='\033[0m'
 # Configuration
 INSTALL_DIR="/opt/redis-helper"
 BIN_DIR="/usr/local/bin"
-CONFIG_DIR="$HOME/.redis-helper"
+
+# Detect real user (even when using sudo)
+if [[ -n "$SUDO_USER" ]]; then
+    REAL_USER="$SUDO_USER"
+    REAL_HOME=$(eval echo "~$SUDO_USER")
+else
+    REAL_USER="$USER"
+    REAL_HOME="$HOME"
+fi
+
+CONFIG_DIR="$REAL_HOME/.redis-helper"
 GITHUB_REPO="https://github.com/CosttaCrazy/redis-helper"
 
 # Functions
@@ -140,6 +150,12 @@ setup_user_config() {
     
     # Create user directories
     mkdir -p "$CONFIG_DIR"/{logs,backups,metrics}
+    
+    # Fix ownership if running with sudo
+    if [[ -n "$SUDO_USER" ]]; then
+        chown -R "$SUDO_USER:$(id -gn "$SUDO_USER")" "$CONFIG_DIR"
+        log "Configuration ownership set to user: $REAL_USER"
+    fi
 }
 
 # Add to PATH if needed
@@ -212,7 +228,11 @@ show_completion() {
     echo -e "${BLUE}Installation Details:${NC}"
     echo "  • Installation directory: $INSTALL_DIR"
     echo "  • Binary location: $BIN_DIR/redis-helper"
-    echo "  • Configuration: $CONFIG_DIR/redis-helper.conf"
+    if [[ -n "$SUDO_USER" ]]; then
+        echo "  • Configuration: $CONFIG_DIR/redis-helper.conf (user: $REAL_USER)"
+    else
+        echo "  • Configuration: $CONFIG_DIR/redis-helper.conf"
+    fi
     echo
     echo -e "${BLUE}Getting Started:${NC}"
     echo "  1. Run: redis-helper"

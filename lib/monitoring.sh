@@ -281,3 +281,57 @@ check_alerts() {
         return 0
     fi
 }
+
+# Monitoring menu
+monitoring_menu() {
+    while true; do
+        clear
+        show_header
+        echo -e "${CYAN}┌─ Monitoring & Alerts ──────────────────────────────────────┐${NC}"
+        echo -e "${CYAN}│${NC}                                                             ${CYAN}│${NC}"
+        echo -e "${CYAN}│${NC}  ${YELLOW}1.${NC} Real-time Dashboard                                  ${CYAN}│${NC}"
+        echo -e "${CYAN}│${NC}  ${YELLOW}2.${NC} Monitor Metrics                                      ${CYAN}│${NC}"
+        echo -e "${CYAN}│${NC}  ${YELLOW}3.${NC} Monitor Memory Usage                                 ${CYAN}│${NC}"
+        echo -e "${CYAN}│${NC}  ${YELLOW}4.${NC} Monitor Operations/sec                               ${CYAN}│${NC}"
+        echo -e "${CYAN}│${NC}  ${YELLOW}5.${NC} Monitor Slow Queries                                 ${CYAN}│${NC}"
+        echo -e "${CYAN}│${NC}  ${YELLOW}6.${NC} Check Alerts                                         ${CYAN}│${NC}"
+        echo -e "${CYAN}│${NC}  ${YELLOW}0.${NC} Back to Main Menu                                    ${CYAN}│${NC}"
+        echo -e "${CYAN}│${NC}                                                             ${CYAN}│${NC}"
+        echo -e "${CYAN}└─────────────────────────────────────────────────────────────┘${NC}"
+        echo
+        echo -n "Select option: "
+        read -r choice
+        
+        case $choice in
+            1)
+                echo -n "Enter refresh rate in seconds (default: 2): "
+                read -r refresh_rate
+                refresh_rate=${refresh_rate:-2}
+                realtime_dashboard "$refresh_rate"
+                ;;
+            2)
+                monitor_metrics
+                ;;
+            3)
+                monitor_memory
+                ;;
+            4)
+                monitor_ops
+                ;;
+            5)
+                monitor_slow_queries
+                ;;
+            6)
+                check_alerts
+                ;;
+            0)
+                return 0
+                ;;
+            *)
+                echo -e "${RED}Invalid option!${NC}"
+                ;;
+        esac
+        
+        [[ $choice != 0 ]] && { echo; read -p "Press Enter to continue..."; }
+    done
+}

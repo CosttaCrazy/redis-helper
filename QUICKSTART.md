@@ -1,30 +1,52 @@
-# Redis Helper - Quick Start Guide
+# Redis Helper v1.1.0 - Quick Start Guide
 
 Get up and running with Redis Helper in minutes!
 
 ## 🚀 Quick Installation
 
-### Option 1: Automatic Installation
-```bash
-# Download and run installer
-curl -sSL https://raw.githubusercontent.com/CosttaCrazy/redis-helper/main/install.sh | bash
-
-# Or with wget
-wget -qO- https://raw.githubusercontent.com/CosttaCrazy/redis-helper/main/install.sh | bash
-```
-
-### Option 2: Manual Installation
+### Option 1: Manual Installation (Recommended)
 ```bash
 # Clone repository
 git clone https://github.com/CosttaCrazy/redis-helper.git
 cd redis-helper
 
-# Run installer
-./install.sh
+# Run installer (system-wide)
+sudo ./install.sh
 
-# Or run directly
+# Or run directly (development)
 chmod +x redis-helper.sh
 ./redis-helper.sh
+```
+
+### Option 2: Automatic Installation
+```bash
+# Download and run installer
+curl -sSL https://raw.githubusercontent.com/CosttaCrazy/redis-helper/main/install.sh | sudo bash
+
+# Or with wget
+wget -qO- https://raw.githubusercontent.com/CosttaCrazy/redis-helper/main/install.sh | sudo bash
+```
+
+## ✅ Verify Installation
+
+### Quick Test
+```bash
+# Test installation
+./run_tests.sh quick
+
+# Or run specific test
+./tests/unit/quick_test.sh
+```
+
+### Full Test Suite
+```bash
+# Run all tests (100+ tests)
+./run_tests.sh
+
+# Run specific categories
+./run_tests.sh unit          # Unit tests
+./run_tests.sh integration   # Integration tests
+./run_tests.sh install       # Installation tests
 ```
 
 ## ⚡ First Run

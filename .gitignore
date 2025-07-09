@@ -1,0 +1,47 @@
+# Redis Helper - Git Ignore File
+
+# Runtime directories (auto-created)
+config/
+logs/
+backups/
+metrics/
+
+# Temporary files
+*.tmp
+*.temp
+/tmp/
+
+# Log files
+*.log
+
+# Backup files
+*.bak
+*.backup
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Test artifacts
+test_results/
+coverage/
+
+# User-specific configuration (if any)
+.env
+.env.local
+
+# Redis dump files (if any)
+*.rdb
+*.aof

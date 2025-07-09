@@ -247,6 +247,50 @@ This launches the interactive menu system with all features accessible through a
 - Built-in benchmarking tools
 - Optimization recommendations
 
+## 🧪 Testing
+
+Redis Helper includes a comprehensive testing suite with 100+ tests covering all functionality.
+
+### Quick Test
+```bash
+# Run quick validation test
+./run_tests.sh quick
+```
+
+### Complete Test Suite
+```bash
+# Run all tests (recommended)
+./run_tests.sh
+
+# Run specific test categories
+./run_tests.sh unit          # Unit tests (core functionality)
+./run_tests.sh integration   # Integration tests (full system)
+./run_tests.sh install       # Installation tests
+```
+
+### Test Structure
+```
+tests/
+├── unit/           # Unit tests for individual components
+├── integration/    # Integration tests for full system
+└── install/        # Installation and setup tests
+```
+
+### Test Coverage
+- **100+ comprehensive tests** covering all modules
+- **Unit tests** for individual functions and modules
+- **Integration tests** for complete system functionality
+- **Installation tests** for setup and configuration
+- **Automated test runner** with detailed reporting
+
+### CI/CD Ready
+The test suite is designed for continuous integration:
+```bash
+# Exit code 0 = all tests passed
+# Exit code 1 = some tests failed
+./run_tests.sh && echo "All tests passed!" || echo "Tests failed!"
+```
+
 ## 🔧 Advanced Features
 
 ### Automated Backups

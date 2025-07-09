@@ -6,7 +6,16 @@
 # Author: Community Project
 
 VERSION="1.1.0"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Detect script directory (handle symlinks correctly)
+if [[ -L "${BASH_SOURCE[0]}" ]]; then
+    # If script is a symlink, follow it to get the real path
+    SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+else
+    # If script is not a symlink, use normal detection
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+fi
+
 CONFIG_FILE="$SCRIPT_DIR/config/redis-helper.conf"
 LOG_FILE="$SCRIPT_DIR/logs/redis-helper.log"
 BACKUP_DIR="$SCRIPT_DIR/backups"
@@ -76,10 +85,18 @@ EOF
 
 # Load modules
 load_modules() {
-    local modules=("monitoring" "performance" "backup" "security" "cluster" "utilities" "reports")
+    local modules=("monitoring" "performance" "backup" "security" "cluster" "utilities" "reports" "configuration")
+    local modules_dir="$SCRIPT_DIR/lib"
+    
+    # Check if modules directory exists
+    if [[ ! -d "$modules_dir" ]]; then
+        log "ERROR" "Modules directory not found: $modules_dir"
+        echo -e "${RED}Error: Modules directory not found. Please check installation.${NC}"
+        return 1
+    fi
     
     for module in "${modules[@]}"; do
-        local module_file="$SCRIPT_DIR/lib/${module}.sh"
+        local module_file="$modules_dir/${module}.sh"
         if [[ -f "$module_file" ]]; then
             source "$module_file"
         else
@@ -324,8 +341,9 @@ connect_redis_cli() {
     $cmd
 }
 
-# Load configuration and start
+# Load configuration and modules
 load_config
+load_modules
 
 # Main execution
 case "${1:-menu}" in
@@ -345,7 +363,7 @@ case "${1:-menu}" in
                 4) backup_restore_menu ;;
                 5) security_audit_menu ;;
                 6) cluster_management_menu ;;
-                7) echo "Configuration management - Coming soon" ;;
+                7) configuration_management_menu ;;
                 8) utilities_tools_menu ;;
                 9) reports_export_menu ;;
                 0) 
